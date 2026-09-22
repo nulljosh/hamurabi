@@ -22,4 +22,13 @@ python3 hamurabi.py --demo
 
 Plays 200 seeded reigns with a sensible ruler and checks nothing goes negative, then checks illegal orders get refused.
 
+## Watch a ruler play
+
+```
+python3 ruler.py 8
+python3 ruler.py --sweep
+```
+
+`ruler.py` plays for the top grade. It feeds everyone but one person a year, which shuts the city gates to newcomers and keeps land per head high, buys land only when it's cheap, and pours every spare bushel into land in the final year. It gets an A+ in about 86 of every 100 reigns it has never seen. The rest are years like seed 7, where the fields yield one bushel an acre six years out of ten and nobody could save that city.
+
 How it works: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). What's next: [roadmap.md](roadmap.md).

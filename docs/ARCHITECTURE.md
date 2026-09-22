@@ -4,5 +4,6 @@ The whole game is one file. The city is a small record holding the year, people,
 
 | File | What it owns |
 |---|---|
-| `hamurabi.py` | Game state, order checks, the yearly step, the terminal loop, and the `--demo` self-check. |
+| `hamurabi.py` | Game state, order checks, the yearly step, the terminal loop, the 1968 end-of-reign grade, and the `--demo` self-check. |
+| `ruler.py` | An automated ruler with three tuned knobs, plus the sweep that tuned them. |
 | `.github/workflows/test.yml` | CI: runs the self-check, plays a scripted game end to end, checks README links. |

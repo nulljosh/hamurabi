@@ -24,6 +24,9 @@ jobs:
           cat out.txt
           grep -Eq "term is over|impeached" out.txt
 
+      - name: QA, the ruler still earns an A+
+        run: python3 ruler.py 8 | tail -1 | grep -q "Grade: A+"
+
   docs:
     runs-on: ubuntu-latest
     timeout-minutes: 5

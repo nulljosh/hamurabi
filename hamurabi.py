@@ -12,6 +12,7 @@ class State:
     acres: int = 1000
     price: int = 19
     starved_total: int = 0
+    starved_pct: float = 0  # sum of yearly starvation %, classic P1 numerator
     over: str = ""  # non-empty = game ended, holds the reason
 
 def check(s, buy, feed, plant):
@@ -40,6 +41,7 @@ def step(s, buy, feed, plant, rng):
     if starved > 0.45 * s.people:
         s.over = f"You starved {starved} people in one year. You are impeached!"
     s.starved_total += starved
+    s.starved_pct += 100 * starved / max(s.people, 1)
     s.people -= starved
     born = rng.randint(1, 5) * (20 * s.acres + s.grain) // max(s.people, 1) // 100 + 1 if starved == 0 else 0
     s.people += born
@@ -50,6 +52,15 @@ def step(s, buy, feed, plant, rng):
     if not s.over and s.year > YEARS: s.over = "Your 10-year term is over."
     return [f"Harvest {yield_} bu/acre ({harvest} bu). Rats ate {rats}.",
             f"{starved} starved, {born} arrived." + (" PLAGUE halved the city!" if plague else "")]
+
+def grade(s):
+    """Classic 1968 end-of-reign verdict, lettered."""
+    years = max(s.year - 1, 1)
+    p1, l = s.starved_pct / years, s.acres / max(s.people, 1)
+    if s.over.endswith("impeached!") or p1 > 33 or l < 7: return "F"
+    if p1 > 10 or l < 9: return "C"
+    if p1 > 3 or l < 10: return "B"
+    return "A+"
 
 def report(s):
     return (f"\n--- Year {s.year} ---\nPopulation {s.people}, {s.acres} acres, "
@@ -75,7 +86,7 @@ def play(rng=random.Random()):
             print(err)
         print("\n".join(step(s, buy, feed, plant, rng)))
     print(f"\n{s.over}\n{s.people} people, {s.acres} acres ({s.acres // max(s.people,1)} per person), "
-          f"{s.starved_total} starved over your reign.")
+          f"{s.starved_total} starved over your reign. Grade: {grade(s)}")
 
 def demo():
     # ponytail: seeded auto-player asserting invariants; replace with pytest if it grows
@@ -90,6 +101,7 @@ def demo():
         assert s.year <= YEARS + 1
     s = State()
     assert check(s, 10**6, 0, 0) and check(s, 0, 0, 5000) and check(s, -2000, 0, 0)
+    assert grade(State(over="You are impeached!")) == "F" and grade(State(year=11, people=90)) == "A+"
     print("demo ok: 200 seeded reigns, invariants hold")
 
 if __name__ == "__main__":
