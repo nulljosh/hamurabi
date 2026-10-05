@@ -1,7 +1,7 @@
 // Release automation. Run: asc workflow run ship-ios VERSION:x.y.z   (then ship-mac)
 {
   "env": {
-    "APP_ID": "",
+    "APP_ID": "6819131590",
     "VERSION": "",
     "SUBMIT": "true"
   },

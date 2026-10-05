@@ -6,7 +6,8 @@ APP="$1"; OUT="$2"; shift 2
 mkdir -p "$OUT"
 for shot in "$@"; do
   pkill -x Hamurapi 2>/dev/null; sleep 0.5
-  HAMURABI_SHOT=$shot "$APP/Contents/MacOS/Hamurapi" >/dev/null 2>&1 &
+  # -reigns and -best override the saved records for this launch only, so a shot never shows (or changes) a real player's grade
+  HAMURABI_SHOT=$shot "$APP/Contents/MacOS/Hamurapi" -reigns 0 -best "" >/dev/null 2>&1 &
   sleep 3
   osascript -e 'tell application "System Events" to tell process "Hamurapi"
     set frontmost to true
